@@ -18,36 +18,24 @@ ENGLISH_FREQUENCY = {  # https://en.wikipedia.org/wiki/Letter_frequency
 }
 
 
-def caesar_encrypt_with_alphabet(text, key, alphabet):
+def caesar_coding_with_alphabet(text, key, alphabet, decode=False):
     encrypted_text = []
+    if decode:
+        negative = -1
+    else:
+        negative = 1
 
     for char in text:
         char_lower = char.lower()
         if char_lower in alphabet:
             is_upper = char.isupper()
             idx = alphabet.index(char_lower)
-            encrypted_char = alphabet[(idx + key) % len(alphabet)]
+            encrypted_char = alphabet[(idx + key * negative) % len(alphabet)]
             encrypted_text.append(encrypted_char.upper() if is_upper else encrypted_char)
         else:
             encrypted_text.append(char)
 
     return ''.join(encrypted_text)
-
-
-def caesar_decrypt_with_key(encrypted_text, key, alphabet):
-    decrypted_text = []
-
-    for char in encrypted_text:
-        char_lower = char.lower()
-        if char_lower in alphabet:
-            is_upper = char.isupper()
-            idx = alphabet.index(char_lower)
-            decrypted_char = alphabet[(idx - key) % len(alphabet)]
-            decrypted_text.append(decrypted_char.upper() if is_upper else decrypted_char)
-        else:
-            decrypted_text.append(char)
-
-    return ''.join(decrypted_text)
 
 
 def get_frequency(text):
@@ -65,7 +53,7 @@ def cracking_caesar(encrypted_text, alphabet, frequency, displayed_number=10):
         raise ValueError('displayed_number must be in range: 0 < displayed_number < 11')
 
     for key in range(len(alphabet)):
-        decrypted_text = caesar_decrypt_with_key(encrypted_text, key, alphabet)
+        decrypted_text = caesar_coding_with_alphabet(encrypted_text, key, alphabet, decode=True)
         freq_decrypted_text = get_frequency(decrypted_text)
         mean_squared_error = sum((freq_decrypted_text.get(char, 0) - frequency.get(char, 0)) ** 2 for char in frequency)
         mean_squared_error /= len(frequency)  # Normalize by the number of letters
@@ -83,7 +71,7 @@ if __name__ == '__main__':
                     Ile cię trzeba cenić, ten tylko się dowie,
                     Kto cię stracił. Dziś piękność twą w całej ozdobie
                     Widzę i opisuję, bo tęsknię po tobie."""
-    encrypted_test_text = caesar_encrypt_with_alphabet(test_text, test_key, POLISH_ALPHABET)
+    encrypted_test_text = caesar_coding_with_alphabet(test_text, test_key, POLISH_ALPHABET)
     print(f'Zaszyfrowany tekst: {encrypted_test_text}\n')
     decryptions = cracking_caesar(encrypted_test_text, POLISH_ALPHABET, POLISH_FREQUENCY, displayed_number)
 
@@ -94,7 +82,7 @@ if __name__ == '__main__':
                 and it is essential to navigating the complexities of life.
                 Whether it's adapting to new technologies, social norms, or personal challenges,
                 adaptability allows us to stay resilient and flexible in the face of change."""
-    encrypted_test_text = caesar_encrypt_with_alphabet(test_text, test_key, ENGLISH_ALPHABET)
+    encrypted_test_text = caesar_coding_with_alphabet(test_text, test_key, ENGLISH_ALPHABET)
     print(f'Zaszyfrowany tekst: {encrypted_test_text}\n')
     decryptions = cracking_caesar(encrypted_test_text, ENGLISH_ALPHABET, ENGLISH_FREQUENCY, displayed_number)
 
