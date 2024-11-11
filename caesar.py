@@ -23,8 +23,8 @@ def caesar_coding(text, key, decode=False):
 
 
 if __name__ == '__main__':
-    test_text = 'ARKADIUSZSTRAMKO'
-    test_key = 22
+    test_text = input('Wprowadź tekst do zaszyfrowania i odszyfrowania używając szyfru Cezara: ')
+    test_key = int(input('Wprowadź klucz (liczba): '))
 
     encrypted_test_text = caesar_coding(test_text, test_key)
     print('Zaszyfrowany tekst:', encrypted_test_text)
