@@ -26,11 +26,15 @@ def vigenere_coding(text, key, decode=False):
 
 
 if __name__ == '__main__':
+    decode = int(input('Szyfrowanie - 1, Deszyfrowanie - 2: '))
     test_text = input('Wprowadź tekst do zaszyfrowania i odszyfrowania używając szyfru Cezara: ')
     test_key = input('Wprowadź klucz (ciąg znaków): ')
 
-    encrypted_test_text = vigenere_coding(test_text, test_key)
-    print('Zaszyfrowany tekst:', encrypted_test_text)
-
-    decrypted_test_text = vigenere_coding(encrypted_test_text, test_key, decode=True)
-    print('Odszyfrowany tekst:', decrypted_test_text)
+    if decode == 1:
+        encrypted_test_text = vigenere_coding(test_text, test_key)
+        print('Zaszyfrowany tekst:', encrypted_test_text)
+    elif decode == 2:
+        decrypted_test_text = vigenere_coding(test_text, test_key, decode=True)
+        print('Odszyfrowany tekst:', decrypted_test_text)
+    else:
+        raise ValueError('decode must be in range: 0 < decode < 3')
