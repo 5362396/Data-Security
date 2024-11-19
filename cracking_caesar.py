@@ -64,16 +64,22 @@ def cracking_caesar(encrypted_text, alphabet, frequency, displayed_number=10):
 
 
 if __name__ == '__main__':
-    test_text = input('Wprowadź tekst do zaszyfrowania używając szyfru Cezara i odszyfrowania metodą analizy częstotliwości: ')
-    test_key = int(input('Wprowadź klucz (liczba): '))
+    decode = int(input('Szyfrowanie + Deszyfrowanie - 1, Tylko Deszyfrowanie - 2: '))
+    if decode == 1:
+        test_text = input('Wprowadź tekst do zaszyfrowania używając szyfru Cezara i odszyfrowania metodą analizy częstotliwości: ')
+        test_key = int(input('Wprowadź klucz szyfrujący (liczba): '))
+    elif decode == 2:
+        encrypted_test_text = input('Wprowadź tekst do odszyfrowania metodą analizy częstotliwości: ')
     language = int(input('Podaj język wprowadzonego tekstu (1 - Polski, 2 - Angielski): '))
     displayed_number = int(input('Wprowadź ilość obliczanych najbardziej prawdopodobnych kombinacji (od 1 do 10): '))
 
     if language == 1:
-        encrypted_test_text = caesar_coding_with_alphabet(test_text, test_key, POLISH_ALPHABET)
+        if decode == 1:
+            encrypted_test_text = caesar_coding_with_alphabet(test_text, test_key, POLISH_ALPHABET)
         decryptions = cracking_caesar(encrypted_test_text, POLISH_ALPHABET, POLISH_FREQUENCY, displayed_number)
     elif language == 2:
-        encrypted_test_text = caesar_coding_with_alphabet(test_text, test_key, ENGLISH_ALPHABET)
+        if decode == 1:
+            encrypted_test_text = caesar_coding_with_alphabet(test_text, test_key, ENGLISH_ALPHABET)
         decryptions = cracking_caesar(encrypted_test_text, ENGLISH_ALPHABET, ENGLISH_FREQUENCY, displayed_number)
     else:
         raise ValueError('language must be in range: 0 < language < 3')
