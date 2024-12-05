@@ -1,3 +1,5 @@
+MOVE_ASCII_CAPITALISED = ord('A')
+
 P10 = [3, 5, 2, 7, 4, 10, 1, 9, 8, 6]
 P8 = [6, 3, 7, 4, 8, 5, 10, 9]
 
@@ -75,8 +77,31 @@ def s_des_encrypt(text, key):
     return permute(second_fk, IP_INVERSE)
 
 
-if __name__ == '__main__':
-    test_text = [1, 0, 0, 1, 1, 0, 0, 1]
-    test_key = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
+def binary_to_letters(bits):
+    l, r = split(bits)
+    letters = []
+    for i in (l, r):
+        decimal_value = int(''.join(map(str, i)), 2)
+        letters.append(chr(MOVE_ASCII_CAPITALISED + decimal_value))
+    return ''.join(letters)
 
-    print(s_des_encrypt(test_text, test_key))
+
+if __name__ == '__main__':
+    mode = input('Jeśli chcesz wprowadzić własny tekst i klucz wprowadź 1, dla wartości domyślnych wpisz cokolwiek: ')
+    if mode == '1':
+        test_text = input('Wprowadź 8-bitowy tekst jawny do zaszyfrowania używając szyfru S-DES (np. 10011001): ')
+        test_key = input('Wprowadź 10-bitowy klucz (np. 1010101010): ')
+    else:
+        test_text = '10011001'
+        test_key = '1010101010'
+    test_text = [int(bit) for bit in test_text.strip()]
+    test_key = [int(bit) for bit in test_key.strip()]
+
+    if len(test_text) != 8:
+        raise ValueError('Tekst jawny musi mieć dokładnie 8 bitów.')
+    if len(test_key) != 10:
+        raise ValueError('Klucz musi mieć dokładnie 10 bitów.')
+
+    encrypted_text = s_des_encrypt(test_text, test_key)
+    print('Zaszyfrowany tekst binarnie:', ''.join(map(str, encrypted_text)))
+    print('Zaszyfrowany tekst jako litery:', binary_to_letters(encrypted_text))
